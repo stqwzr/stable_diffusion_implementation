@@ -1,6 +1,9 @@
 import torch
 from torch import nn
 from torch.nn import functional as F
+from decoder import VAE_residual_block
+from stable_diffusion.attention import SelfAttention
+
 
 
 class VAE_Encoder(nn.Sequential):
