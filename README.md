@@ -4,9 +4,9 @@ This project aims to create a custom implementation of the stable diffusion tech
 
 ## Components
 
-- [x] VAE (Variational Autoencoder)
-- [x] CLIP (Contrastive Language–Image Pretraining)
-- [x] Attention UNet
-- [x] Attention Mechanism
-- [ ] Denoising Algorithm
-- [ ] Full Pipeline
+- ✅ **VAE (Variational Autoencoder)**
+- ✅ **CLIP (Contrastive Language–Image Pretraining)**
+- ✅ **Attention UNet**
+- ✅ **Attention Mechanism**
+- ❌ **Denoising Algorithm**
+- ❌ **Full Pipeline**
