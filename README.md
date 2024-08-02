@@ -8,6 +8,6 @@ This project aims to create a custom implementation of the stable diffusion tech
 - ✅ **CLIP (Contrastive Language–Image Pretraining)**
 - ✅ **Attention Mechanism**
 - ✅ **Time Embedding**
-- ❌ **Attention UNet** is in progress
+- ✅ **Attention UNet** is in progress
 - ❌ **Denoising Algorithm**
 - ❌ **Full Pipeline**

@@ -57,6 +57,59 @@ class UNET_residiualBlock(nn.Module):
 
         return merged
 
+
+class Unet_AttentionBlock(nn.Module):
+    def __init__(self, n_head, n_embd, d_context=768):
+        super().__init__()
+        channels = n_head * n_embd
+
+        self.groupnorm = nn.GroupNorm(32, channels, eps=1e-6)
+        self.conv_input = nn.Conv2d(channels, channels, kernel_size=1, padding=0)
+
+        self.layernorm1 = nn.LayerNorm(channels)
+        self.attention1 = SelfAttention(n_head, channels, in_proj_b=False)
+
+        self.layernorm2 = nn.LayerNorm(channels)
+        self.attention2 = CrossAttention(n_head, channels, d_context, in_proj_b=False)
+
+        self.layernorm3 = nn.LayerNorm(channels)
+        self.linear1 = nn.Linear(channels, 4 * channels * 2)
+        self.linear2 = nn.Linear(4 * channels * 2, channels)
+
+        self.conv_out = nn.Conv2(channels, channels, kernel_size=1, padding=0)
+
+    def forward(self, x, context):
+        res = x
+        x = self.groupnorm(x)
+        x = self.conv_input(x)
+
+        n, c, w, h = x.shape
+        x = x.view((n, c, h * w))
+        x = x.transpose(-1, -2)
+
+        res_fast = x
+        x = self.layernorm1(x)
+        self.attention1(x)
+        x += res_fast
+
+        res_fast = x
+        x = self.layernorm2(x)
+        self.attention2(x, context)
+        x += res_fast
+
+        res_fast = x
+        x = self.layernorm3(x)
+        x, gate = self.linear1(x).chunk(2, dim=-1)
+        x = x * F.gelu(gate)
+        x = self.linear2(x)
+        x += res_fast
+
+        x = x.transpose(-1, -2)
+        x = x.view((n, c, w, h))
+
+        return self.conv_out(x) * res
+
+
 class SwitchSequential(nn.Module):
     def forward(self, x, context, time):
         if layer in self:
