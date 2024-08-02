@@ -6,7 +6,8 @@ This project aims to create a custom implementation of the stable diffusion tech
 
 - ✅ **VAE (Variational Autoencoder)**
 - ✅ **CLIP (Contrastive Language–Image Pretraining)**
-- ✅ **Attention UNet**
 - ✅ **Attention Mechanism**
+- ✅ **Time Embedding**
+- ❌ **Attention UNet** is in progress
 - ❌ **Denoising Algorithm**
 - ❌ **Full Pipeline**
